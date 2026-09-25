@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: att_mongo
+    restart: unless-stopped
+    ports: ['27017:27017']
+    volumes: ['mongo_data:/data/db']
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      retries: 5
+
+  server:
+    build: ./server
+    container_name: att_server
+    restart: unless-stopped
+    depends_on:
+      mongo: { condition: service_healthy }
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/smart_attendance
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change_me_access}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change_me_refresh}
+      CLIENT_ORIGIN: http://localhost:8080
+      TZ: Asia/Kolkata
+      ENABLE_JOBS: 'true'
+    ports: ['5000:5000']
+    volumes: ['uploads:/app/uploads']
+
+  client:
+    build: ./client
+    container_name: att_client
+    restart: unless-stopped
+    depends_on: [server]
+    ports: ['8080:80']
+
+volumes:
+  mongo_data:
+  uploads:

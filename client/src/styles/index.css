@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * White theme: pure white surfaces, slate text, a single blue accent.
+ * No dark-mode variants are defined, so the app renders light everywhere.
+ */
+@layer base {
+  html { -webkit-font-smoothing: antialiased; color-scheme: light; }
+  body { @apply bg-white text-slate-800 font-sans; }
+  :focus-visible { @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white rounded; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium
+           transition disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700; }
+  .btn-secondary { @apply btn bg-white text-slate-700 border border-slate-300 hover:bg-slate-50; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+  .btn-ghost { @apply btn text-slate-600 hover:bg-slate-100; }
+  .btn-sm { @apply px-2.5 py-1 text-xs; }
+
+  .card { @apply bg-white rounded-xl border border-slate-200 shadow-card; }
+  .input {
+    @apply w-full rounded-lg bg-white border border-slate-300 px-3 py-2 text-sm text-slate-800
+           placeholder:text-slate-400 focus:border-brand-500 focus:ring-1 focus:ring-brand-500;
+  }
+  .label { @apply block text-sm font-medium text-slate-700 mb-1; }
+  .error-text { @apply text-sm text-red-600 mt-1; }
+  .badge { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium; }
+  .th { @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 bg-slate-50; }
+  .td { @apply px-4 py-3 text-sm text-slate-700; }
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50
+           focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:shadow;
+  }
+
+  /* Attendance marking toggles - icon + text, never colour alone */
+  .mark-btn { @apply rounded-lg border px-3 py-1.5 text-xs font-semibold transition; }
+  .mark-present { @apply mark-btn border-emerald-300 bg-emerald-50 text-emerald-800; }
+  .mark-absent  { @apply mark-btn border-red-300 bg-red-50 text-red-800; }
+  .mark-late    { @apply mark-btn border-amber-300 bg-amber-50 text-amber-800; }
+  .mark-excused { @apply mark-btn border-blue-300 bg-blue-50 text-blue-800; }
+  .mark-idle    { @apply mark-btn border-slate-200 bg-white text-slate-400 hover:border-slate-300; }
+}
